@@ -5,7 +5,8 @@
  * Se trata de añadir un interfaz de usuario que permita 
  * disparar animaciones sobre los objetos de la escena con Tween
  * 
- * @author 
+ * @author José Páez <jpaez@etsinf.upv.es> FEB2024
+ * Repositorio GIT: jpaez7.github.io 
  * 
  */
 

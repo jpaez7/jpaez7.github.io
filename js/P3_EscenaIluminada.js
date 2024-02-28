@@ -4,7 +4,8 @@
  * Practica AGM #3. Escena basica con interfaz, animacion e iluminacion
  * Se trata de añadir luces a la escena y diferentes materiales
  * 
- * @author 
+ * @author José Páez <jpaez@etsinf.upv.es> FEB2024
+ * Repositorio GIT: jpaez7.github.io 
  * 
  */
 
