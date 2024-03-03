@@ -44,7 +44,7 @@ function init()
 
     // Escena
     scene = new THREE.Scene();
-    scene.background = new THREE.Color(0.5,0.5,0.5);
+    scene.background = new THREE.Color(1, 0.7, 0.2);
     
     // Camara
     camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1,1000);
@@ -59,19 +59,73 @@ function loadScene()
     /*******************
     * TO DO: Construir un suelo en el plano XZ
     *******************/
+    const suelo = new THREE.Mesh( new THREE.PlaneGeometry(10,10,10,10), material );
+    suelo.rotation.x = -Math.PI / 2;
+    scene.add(suelo);
 
     /*******************
     * TO DO: Construir una escena con 5 figuras diferentes posicionadas
     * en los cinco vertices de un pentagono regular alredor del origen
     *******************/
+    const geoCubo = new THREE.BoxGeometry( 2,2,2 );
+    const geoEsfera = new THREE.SphereGeometry( 1, 20,20 );
+    const geoCone = new THREE.ConeGeometry( 1, 5, 8, 1);
+    const geoCylinder = new THREE.CylinderGeometry( 1, 1, 2);
+    const geoCapsule = new THREE.CapsuleGeometry(1, 5, 1);
+
+    const cubo = new THREE.Mesh( geoCubo, material );
+    const esfera = new THREE.Mesh( geoEsfera, material );
+    const cone = new THREE.Mesh( geoCone, material );
+    const cylinder = new THREE.Mesh( geoCylinder, material );
+    const capsule = new THREE.Mesh( geoCapsule, material );
 
     /*******************
     * TO DO: Añadir a la escena un modelo importado en el centro del pentagono
     *******************/
 
+      // Importar un modelo en json
+      const loader = new THREE.ObjectLoader();
+
+      loader.load( 'models/soldado/soldado.json', 
+          function(objeto){
+              cubo.add(objeto);
+              objeto.position.y = 1;
+          }
+      )
+  
+      // Importar un modelo en gltf
+      const glloader = new GLTFLoader();
+  
+      glloader.load( 'models/RobotExpressive.glb', function ( gltf ) {
+      //glloader.load( 'models/robota/scene.gltf', function ( gltf ) {
+          gltf.scene.position.y = 1;
+          gltf.scene.rotation.y = -Math.PI/2;
+          esfera.add( gltf.scene );
+          console.log("ROBOT");
+          console.log(gltf);
+      
+      }, undefined, function ( error ) {
+      
+          console.error( error );
+      
+      } );
+
     /*******************
     * TO DO: Añadir a la escena unos ejes
     *******************/
+
+    esferaCubo = new THREE.Object3D();
+    esferaCubo.position.y = 1.5;
+    cubo.position.x = -1;
+    esfera.position.x = 1;
+    cubo.add( new THREE.AxesHelper(1) );
+
+    scene.add( esferaCubo);
+    esferaCubo.add( cubo );
+    esferaCubo.add( esfera );
+
+    scene.add( new THREE.AxesHelper(3) );
+
 }
 
 function update()

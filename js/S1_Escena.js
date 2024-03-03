@@ -34,7 +34,7 @@ function init()
 
     // Escena
     scene = new THREE.Scene();
-    scene.background = new THREE.Color(0.5,0.5,0.5);
+    scene.background = new THREE.Color(0.5, 0.5, 0.5);
 
     // Camara
     camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1,1000);
@@ -53,7 +53,7 @@ function loadScene()
     const esfera = new THREE.Mesh( geoEsfera, material );
 
     // Suelo
-    const suelo = new THREE.Mesh( new THREE.PlaneGeometry(10,10, 10,10), material );
+    const suelo = new THREE.Mesh( new THREE.PlaneGeometry(10,10,10,10), material );
     suelo.rotation.x = -Math.PI / 2;
     scene.add(suelo);
 
