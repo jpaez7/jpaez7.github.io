@@ -1,5 +1,5 @@
 /**
- * Escena.js
+ * P1_Escena.js
  * 
  * Practica AGM #1. Escena basica en three.js
  * Seis objetos organizados en un grafo de escena con
@@ -69,15 +69,15 @@ function loadScene()
     *******************/
     const geoCubo = new THREE.BoxGeometry( 2,2,2 );
     const geoEsfera = new THREE.SphereGeometry( 1, 20,20 );
-    const geoCone = new THREE.ConeGeometry( 1, 5, 8, 1);
-    const geoCylinder = new THREE.CylinderGeometry( 1, 1, 2);
-    const geoCapsule = new THREE.CapsuleGeometry(1, 5, 1);
+    const geoExtrude = new THREE.ExtrudeGeometry( 1, 5, 8, 1);
+    const geoIcosa = new THREE.IcosahedronGeometry( 1, 1, 2);
+    const geoDodeca = new THREE.DodecahedronGeometry(1, 5, 1);
 
     const cubo = new THREE.Mesh( geoCubo, material );
     const esfera = new THREE.Mesh( geoEsfera, material );
-    const cone = new THREE.Mesh( geoCone, material );
-    const cylinder = new THREE.Mesh( geoCylinder, material );
-    const capsule = new THREE.Mesh( geoCapsule, material );
+    const extrude = new THREE.Mesh( geoExtrude, material );
+    const icosa = new THREE.Mesh( geoIcosa, material );
+    const dodeca = new THREE.Mesh( geoDodeca, material );
 
     /*******************
     * TO DO: Añadir a la escena un modelo importado en el centro del pentagono
