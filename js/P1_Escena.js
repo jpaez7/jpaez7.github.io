@@ -55,6 +55,7 @@ function init()
 function loadScene()
 {
     const material = new THREE.MeshNormalMaterial( );
+    //const material = new THREE.MeshBasicMaterial( { color: 'yellow', wireframe: true } );
 
     /*******************
     * TO DO: Construir un suelo en el plano XZ
@@ -67,17 +68,17 @@ function loadScene()
     * TO DO: Construir una escena con 5 figuras diferentes posicionadas
     * en los cinco vertices de un pentagono regular alredor del origen
     *******************/
-    const geoCubo = new THREE.BoxGeometry( 2,2,2 );
+    const geoCubo = new THREE.BoxGeometry( 2, 2, 2 );
     const geoEsfera = new THREE.SphereGeometry( 1, 20,20 );
-    const geoExtrude = new THREE.ExtrudeGeometry( 1, 5, 8, 1);
-    const geoIcosa = new THREE.IcosahedronGeometry( 1, 1, 2);
-    const geoDodeca = new THREE.DodecahedronGeometry(1, 5, 1);
+    //const geoExtrude = new THREE.ExtrudeGeometry( 1, 5, 8, 1, 2, 3 );
+    //const geoIcosa = new THREE.IcosahedronGeometry( 1, 1, 2 );
+    //const geoDodeca = new THREE.DodecahedronGeometry( 1, 5, 1 );
 
     const cubo = new THREE.Mesh( geoCubo, material );
     const esfera = new THREE.Mesh( geoEsfera, material );
-    const extrude = new THREE.Mesh( geoExtrude, material );
-    const icosa = new THREE.Mesh( geoIcosa, material );
-    const dodeca = new THREE.Mesh( geoDodeca, material );
+    //const extrude = new THREE.Mesh( geoExtrude, material );
+    //const icosa = new THREE.Mesh( geoIcosa, material );
+    //const dodeca = new THREE.Mesh( geoDodeca, material ); 
 
     /*******************
     * TO DO: Añadir a la escena un modelo importado en el centro del pentagono
@@ -86,19 +87,19 @@ function loadScene()
       // Importar un modelo en json
       const loader = new THREE.ObjectLoader();
 
-      loader.load( 'models/soldado/soldado.json', 
-          function(objeto){
-              cubo.add(objeto);
-              objeto.position.y = 1;
-          }
-      )
+    loader.load( 'models/soldado/soldado.json', 
+        function(objeto){
+            cubo.add(objeto);
+            objeto.position.y = 1;
+        }
+    )
   
       // Importar un modelo en gltf
       const glloader = new GLTFLoader();
   
-      glloader.load( 'models/RobotExpressive.glb', function ( gltf ) {
-      //glloader.load( 'models/robota/scene.gltf', function ( gltf ) {
-          gltf.scene.position.y = 1;
+      //glloader.load( 'models/RobotExpressive.glb', function ( gltf ) {
+      glloader.load( 'models/playerbb/scene.gltf', function ( gltf ) {
+          gltf.scene.position.y = 2;
           gltf.scene.rotation.y = -Math.PI/2;
           esfera.add( gltf.scene );
           console.log("ROBOT");
@@ -123,8 +124,12 @@ function loadScene()
     scene.add( esferaCubo);
     esferaCubo.add( cubo );
     esferaCubo.add( esfera );
-
+    
+    
     scene.add( new THREE.AxesHelper(3) );
+
+    //extrude.position.y = 1.5;
+    //scene.add( extrude );
 
 }
 

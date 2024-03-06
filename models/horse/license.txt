@@ -1,0 +1,11 @@
+Model Information:
+* title:	Chess - Horse model
+* source:	https://sketchfab.com/3d-models/chess-horse-model-290cad425c744f3e82f0636f5395b7dd
+* author:	pascalos (https://sketchfab.com/pascalos)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Chess - Horse model" (https://sketchfab.com/3d-models/chess-horse-model-290cad425c744f3e82f0636f5395b7dd) by pascalos (https://sketchfab.com/pascalos) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

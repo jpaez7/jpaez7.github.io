@@ -1,0 +1,11 @@
+Model Information:
+* title:	Dead Baseball Player
+* source:	https://sketchfab.com/3d-models/dead-baseball-player-2e1b7ba03dad4d27a4251f4b90825b0f
+* author:	VanHyfte_Clement (https://sketchfab.com/VanHyfte_Clement)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Dead Baseball Player" (https://sketchfab.com/3d-models/dead-baseball-player-2e1b7ba03dad4d27a4251f4b90825b0f) by VanHyfte_Clement (https://sketchfab.com/VanHyfte_Clement) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

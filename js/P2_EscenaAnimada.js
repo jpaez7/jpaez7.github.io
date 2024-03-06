@@ -14,6 +14,11 @@
 /*******************
  * TO DO: Cargar los modulos necesarios
  *******************/
+import * as THREE from "../lib/three.module.js";
+import {GLTFLoader} from "../lib/GLTFLoader.module.js";
+import {OrbitControls} from "../lib/OrbitControls.module.js";
+import {TWEEN} from "../lib/tween.module.min.js";
+import {GUI} from "../lib/lil-gui.module.min.js";
 
 // Variables de consenso
 let renderer, scene, camera;
@@ -22,6 +27,9 @@ let renderer, scene, camera;
 /*******************
  * TO DO: Variables globales de la aplicacion
  *******************/
+let cameraControls, effectController;
+let esferaCubo,cubo,esfera;
+let angulo = 0;
 
 // Acciones
 init();
@@ -37,9 +45,11 @@ function init()
     /*******************
     * TO DO: Completar el motor de render y el canvas
     *******************/
+    document.getElementById('container').appendChild( renderer.domElement );
 
     // Escena
     scene = new THREE.Scene();
+    scene.background = new THREE.Color(1, 0.7, 0.2);
     
     // Camara
     camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1,1000);
@@ -47,7 +57,12 @@ function init()
     /*******************
     * TO DO: Añadir manejador de camara (OrbitControls)
     *******************/
+    cameraControls = new OrbitControls( camera, renderer.domElement );
+    cameraControls.target.set(0,1,0);
     camera.lookAt( new THREE.Vector3(0,1,0) );
+
+     // Eventos
+     renderer.domElement.addEventListener('dblclick', animate );
 }
 
 function loadScene()
@@ -57,6 +72,54 @@ function loadScene()
     /*******************
     * TO DO: Misma escena que en la practica anterior
     *******************/
+    // Suelo
+    const suelo = new THREE.Mesh( new THREE.PlaneGeometry(10,10, 10,10), material );
+    suelo.rotation.x = -Math.PI/2;
+    suelo.position.y = -0.2;
+    scene.add(suelo);
+
+    // Esfera y cubo
+    esfera = new THREE.Mesh( new THREE.SphereGeometry(1,20,20), material );
+    cubo = new THREE.Mesh( new THREE.BoxGeometry(2,2,2), material );
+    esfera.position.x = 1;
+    cubo.position.x = -1;
+
+    esferaCubo = new THREE.Object3D();
+    esferaCubo.add(esfera);
+    esferaCubo.add(cubo);
+    esferaCubo.position.y = 1.5;
+
+    scene.add(esferaCubo);
+
+    scene.add( new THREE.AxesHelper(3) );
+    cubo.add( new THREE.AxesHelper(1) );
+
+    // Modelos importados
+    const loader = new THREE.ObjectLoader();
+    loader.load('models/soldado/soldado.json', 
+    function (objeto)
+    {
+        const soldado = new THREE.Object3D();
+        soldado.add(objeto);
+        cubo.add(soldado);
+        soldado.position.y = 1;
+        soldado.name = 'soldado';
+    });
+
+   // Importar un modelo en gltf
+   const glloader = new GLTFLoader();
+
+   glloader.load( 'models/robota/scene.gltf', function ( gltf ) {
+       gltf.scene.position.y = 1;
+       gltf.scene.rotation.y = -Math.PI/2;
+       gltf.scene.name = 'robota';
+       esfera.add( gltf.scene );
+   
+   }, undefined, function ( error ) {
+   
+       console.error( error );
+   
+   } );
 
 }
 
@@ -77,6 +140,7 @@ function update(delta)
     /*******************
     * TO DO: Actualizar tween
     *******************/
+
 }
 
 function render(delta)
