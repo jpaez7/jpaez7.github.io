@@ -24,7 +24,9 @@ let renderer, scene, camera;
 /*******************
  * TO DO: Variables globales de la aplicacion
  *******************/
-let esferaCubo;
+let pentaFigu;
+let figuras;
+let model;
 let angulo = 0;
 
 // Acciones
@@ -54,8 +56,11 @@ function init()
 
 function loadScene()
 {
-    const material = new THREE.MeshNormalMaterial( );
-    //const material = new THREE.MeshBasicMaterial( { color: 'yellow', wireframe: true } );
+    // *** Selección de presentación en color del Mesh Básico
+    
+    //const material = new THREE.MeshNormalMaterial( );
+    const material = new THREE.MeshBasicMaterial( { color: 'white', wireframe: true } );
+    //const material = new THREE.MeshBasicMaterial( { color: 'white' } );
 
     /*******************
     * TO DO: Construir un suelo en el plano XZ
@@ -70,22 +75,78 @@ function loadScene()
     *******************/
     const geoCubo = new THREE.BoxGeometry( 2, 2, 2 );
     const geoEsfera = new THREE.SphereGeometry( 1, 20,20 );
-    //const geoExtrude = new THREE.ExtrudeGeometry( 1, 5, 8, 1, 2, 3 );
-    //const geoIcosa = new THREE.IcosahedronGeometry( 1, 1, 2 );
-    //const geoDodeca = new THREE.DodecahedronGeometry( 1, 5, 1 );
+    
+    // Incorporar 3 nuvas figuras para completar lo solicitado
 
+    const geoDodeca = new THREE.DodecahedronGeometry( 1, 1, 1);
+    const geoCylinder = new THREE.CylinderGeometry( 1, 1, 2);
+    const geoIcosa = new THREE.IcosahedronGeometry(1, 1, 2);
+    
     const cubo = new THREE.Mesh( geoCubo, material );
     const esfera = new THREE.Mesh( geoEsfera, material );
-    //const extrude = new THREE.Mesh( geoExtrude, material );
-    //const icosa = new THREE.Mesh( geoIcosa, material );
-    //const dodeca = new THREE.Mesh( geoDodeca, material ); 
+    const dodeca = new THREE.Mesh( geoDodeca, material );
+    const cylinder = new THREE.Mesh( geoCylinder, material );
+    const icosa = new THREE.Mesh( geoIcosa, material );
+
+    figuras = [cubo, esfera, dodeca, cylinder, icosa];
+
+    // Elaborar el pentagono y colocar figuras en cada vertice
+
+    const pentShape = new THREE.Shape();
+    const pentRadius = 4;
+    const pentSides = 5;
+
+    for (let i = 0; i < pentSides; i++) {
+        let angle = (i / pentSides) * Math.PI * 2;       
+        let x = Math.cos(angle) * pentRadius;
+        let y = Math.sin(angle) * pentRadius;
+        if (i === 0) {
+            pentShape.moveTo(x, y);
+        } else {
+            pentShape.lineTo(x, y);
+        }
+        
+        // Colocar figuras en posición
+        
+        figuras[i].position.x = x;
+        figuras[i].position.y = y;
+    }
+    
+    // Crear geometría del pentagono
+    
+    const geoPent = new THREE.ShapeGeometry( pentShape );
+    const pent = new THREE.Mesh( geoPent, material );
+    
+    // Relacionar objetos (hijos) al mesh del pentagono al resto de mesh
+    // Para rotar en paralelo al pentagono
+    
+    for(let i = 0; i < figuras.length; i++){
+        pent.add(figuras[i]);
+        figuras[i].rotation.x = Math.PI / 2;
+    }
+    
+    // Rotar el pentagono para que sea paralelo al suelo
+    // (también se mueven las figuras para que sean paralelas sobre el plano)
+    
+    pent.rotation.x = -Math.PI / 2;
+    
+    //Crear el objeto 3D que representa el pentagono
+    
+    pentaFigu = new THREE.Object3D();
+    pentaFigu.position.x=0;
+    pentaFigu.position.y=1;
+    pentaFigu.position.z=0;
+    pentaFigu.add(pent);
+    pentaFigu.add( new THREE.AxesHelper(1) );
+    
+    scene.add(pentaFigu);
 
     /*******************
     * TO DO: Añadir a la escena un modelo importado en el centro del pentagono
     *******************/
 
-      // Importar un modelo en json
-      const loader = new THREE.ObjectLoader();
+    // Importar un modelo en json
+    const loader = new THREE.ObjectLoader();
 
     loader.load( 'models/soldado/soldado.json', 
         function(objeto){
@@ -94,42 +155,39 @@ function loadScene()
         }
     )
   
-      // Importar un modelo en gltf
-      const glloader = new GLTFLoader();
+    // Importar modelos en gltf
+    const glloader = new GLTFLoader();
   
-      //glloader.load( 'models/RobotExpressive.glb', function ( gltf ) {
-      glloader.load( 'models/playerbb/scene.gltf', function ( gltf ) {
-          gltf.scene.position.y = 2;
-          gltf.scene.rotation.y = -Math.PI/2;
-          esfera.add( gltf.scene );
-          console.log("ROBOT");
-          console.log(gltf);
+    glloader.load( 'models/playerbb/scene.gltf', function ( gltf ) {
+        gltf.scene.position.y = 2;
+        gltf.scene.rotation.y = -Math.PI/2;
+        esfera.add( gltf.scene );
+        console.log("BB PLAYER");
+        console.log(gltf);
       
-      }, undefined, function ( error ) {
+    }, undefined, function ( error ) {
       
-          console.error( error );
+        console.error( error );
       
-      } );
+    } );
+
+       glloader.load( 'models/robota/scene.gltf', function ( gltf ) {
+        gltf.scene.position.y = 1;
+        gltf.scene.rotation.y = -Math.PI/2;
+        cylinder.add( gltf.scene );
+        console.log("ROBOT");
+        console.log(gltf);
+      
+    }, undefined, function ( error ) {
+      
+        console.error( error );
+      
+    } );
 
     /*******************
     * TO DO: Añadir a la escena unos ejes
     *******************/
-
-    esferaCubo = new THREE.Object3D();
-    esferaCubo.position.y = 1.5;
-    cubo.position.x = -1;
-    esfera.position.x = 1;
-    cubo.add( new THREE.AxesHelper(1) );
-
-    scene.add( esferaCubo);
-    esferaCubo.add( cubo );
-    esferaCubo.add( esfera );
-    
-    
     scene.add( new THREE.AxesHelper(3) );
-
-    //extrude.position.y = 1.5;
-    //scene.add( extrude );
 
 }
 
@@ -140,7 +198,18 @@ function update()
     * y del conjunto pentagonal sobre el objeto importado
     *******************/
     angulo += 0.01;
-    esferaCubo.rotation.y = angulo;
+    pentaFigu.rotation.y = angulo;
+
+    for(let i = 0; i < figuras.length; i++){
+        figuras[i].rotation.y = angulo
+    }
+    try{
+        model.rotation.y = angulo;
+    }
+    catch{
+        console.log("El modelo no se ha cargado")
+    }
+
 }
 
 function render()
