@@ -5,7 +5,7 @@
  * Se trata de añadir un interfaz de usuario que permita 
  * disparar animaciones sobre los objetos de la escena con Tween
  * 
- * @author <bpucsal@inf.upv.es>, 2024
+ * @author <jpaez@inf.upv.es>, 2024
  * 
  */
 
@@ -37,7 +37,8 @@ function init()
 
     // Escena
     scene = new THREE.Scene();
-    
+    scene.background = new THREE.Color(0.5,0.5,0.5);
+
     // Camara
     camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1,1000);
     camera.position.set( 28, 22, 24);
@@ -73,7 +74,7 @@ function loadGUI()
 	const gui = new GUI();
 
 	// Construccion del menu
-	const h = gui.addFolder("Control Torus");
+	const h = gui.addFolder("Control Horse");
     h.add(effectController, "altura", 0.0, 10.0, 0.1).name("Altura");
     h.add(effectController, "velocidad", 0.0, 0.01, 0.0001).name("Velocidad");
     h.add(effectController, "rango", 0.0, 10.0, 0.1).name("Rango");
@@ -81,7 +82,7 @@ function loadGUI()
 
 function update()
 {
-    // Hacer que el torus suba y baje, como si flotase suavemente en un bucle infinito
+    // Hacer que el horse suba y baje, como si flotase suavemente en un bucle infinito
     if (horse)
     horse.position.y = effectController.altura + Math.sin( Date.now() * effectController.velocidad ) * effectController.rango;
     TWEEN.update();

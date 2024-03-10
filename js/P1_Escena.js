@@ -58,11 +58,8 @@ function init()
 function loadScene()
 {
     // *** Selección de presentación en color del Mesh Básico
-    
-    //const material = new THREE.MeshNormalMaterial( );
     const material = new THREE.MeshBasicMaterial( { color: 'white', wireframe: true } );
-    //const material = new THREE.MeshBasicMaterial( { color: 'white' } );
-
+    
     /*******************
     * TO DO: Construir un suelo en el plano XZ
     *******************/
