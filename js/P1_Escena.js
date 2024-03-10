@@ -5,7 +5,7 @@
  * Seis objetos organizados en un grafo de escena con
  * transformaciones, animacion basica y modelos importados
  * 
- * @author José Páez <jpaez@etsinf.upv.es> FEB2024
+ * @author José Páez <jpaez@etsinf.upv.es>, FEB2024
  * Repositorio GIT: jpaez7.github.io
  * 
  */
@@ -27,6 +27,7 @@ let renderer, scene, camera;
 let pentaFigu;
 let figuras;
 let model;
+let player;
 let angulo = 0;
 
 // Acciones
@@ -76,7 +77,7 @@ function loadScene()
     const geoCubo = new THREE.BoxGeometry( 2, 2, 2 );
     const geoEsfera = new THREE.SphereGeometry( 1, 20,20 );
     
-    // Incorporar 3 nuvas figuras para completar lo solicitado
+    // Incorporar 3 nuevas figuras para completar lo solicitado
 
     const geoDodeca = new THREE.DodecahedronGeometry( 1, 1, 1);
     const geoCylinder = new THREE.CylinderGeometry( 1, 1, 2);
@@ -96,7 +97,7 @@ function loadScene()
     const pentRadius = 4;
     const pentSides = 5;
 
-    for (let i = 0; i < pentSides; i++) {
+     for (let i = 0; i < pentSides; i++) {
         let angle = (i / pentSides) * Math.PI * 2;       
         let x = Math.cos(angle) * pentRadius;
         let y = Math.sin(angle) * pentRadius;
@@ -111,14 +112,12 @@ function loadScene()
         figuras[i].position.x = x;
         figuras[i].position.y = y;
     }
-    
+
     // Crear geometría del pentagono
-    
     const geoPent = new THREE.ShapeGeometry( pentShape );
     const pent = new THREE.Mesh( geoPent, material );
-    
-    // Relacionar objetos (hijos) al mesh del pentagono al resto de mesh
-    // Para rotar en paralelo al pentagono
+
+    // Relacionar objetos al mesh del pentagono y al resto de mesh
     
     for(let i = 0; i < figuras.length; i++){
         pent.add(figuras[i]);
@@ -126,11 +125,11 @@ function loadScene()
     }
     
     // Rotar el pentagono para que sea paralelo al suelo
-    // (también se mueven las figuras para que sean paralelas sobre el plano)
+    // además mover las figuras en paralelo sobre el plano
     
     pent.rotation.x = -Math.PI / 2;
     
-    //Crear el objeto 3D que representa el pentagono
+    //Crear el objeto que representa un pentagono
     
     pentaFigu = new THREE.Object3D();
     pentaFigu.position.x=0;
@@ -150,8 +149,8 @@ function loadScene()
 
     loader.load( 'models/soldado/soldado.json', 
         function(objeto){
-            cubo.add(objeto);
-            objeto.position.y = 1;
+            pentaFigu.add(objeto);
+            objeto.position.y = 0;
         }
     )
   
@@ -161,17 +160,17 @@ function loadScene()
     glloader.load( 'models/playerbb/scene.gltf', function ( gltf ) {
         gltf.scene.position.y = 2;
         gltf.scene.rotation.y = -Math.PI/2;
-        esfera.add( gltf.scene );
+        cubo.add( gltf.scene );
         console.log("BB PLAYER");
         console.log(gltf);
-      
+           
     }, undefined, function ( error ) {
       
         console.error( error );
       
     } );
 
-       glloader.load( 'models/robota/scene.gltf', function ( gltf ) {
+        glloader.load( 'models/robota/scene.gltf', function ( gltf ) {
         gltf.scene.position.y = 1;
         gltf.scene.rotation.y = -Math.PI/2;
         cylinder.add( gltf.scene );
@@ -184,6 +183,21 @@ function loadScene()
       
     } );
 
+    glloader.load( 'models/playerfa/scene.gltf', function ( gltf ) {
+        gltf.scene.position.y = 1;
+        gltf.scene.rotation.y = -Math.PI/2;
+        esfera.add( gltf.scene );
+        console.log("FA PLAYER");
+        console.log(gltf);
+        
+        // Pasar el objeto a una variable global
+        player = scene.getObjectByName('models/playerfa');
+      
+    }, undefined, function ( error ) {
+      
+        console.error( error );
+      
+    } );
     /*******************
     * TO DO: Añadir a la escena unos ejes
     *******************/
@@ -210,6 +224,10 @@ function update()
         console.log("El modelo no se ha cargado")
     }
 
+    // Hacer que el player suba y baje, como si estuviese flotando en un bucle infinito
+    if (player)
+    player.position.y = 7 + Math.sin( Date.now() * 0.001 ) * 2;
+    
 }
 
 function render()

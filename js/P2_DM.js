@@ -138,7 +138,7 @@ function loadScene()
     * TO DO: Añadir a la escena un modelo importado en el centro del pentagono
     *******************/
     const glloader = new GLTFLoader();
-    glloader.load( 'models/anime_lady_officer/scene.gltf', function ( gltf ) {
+    glloader.load( 'models/playerbb/scene.gltf', function ( gltf ) {
             gltf.scene.position.y = 0;
             gltf.scene.rotation.y = -Math.PI/2;
             pentObject.add( gltf.scene );

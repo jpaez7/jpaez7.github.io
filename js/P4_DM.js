@@ -498,7 +498,6 @@ function render(delta)
      *******************/
     renderer.setViewport(0 ,0 ,window.innerWidth,window.innerHeight);
     renderer.render( scene, camera );
-0
     renderer.setViewport(0, 7*window.innerHeight/8, window.innerWidth/8,window.innerHeight/8);
     renderer.render( scene, camaraOrto );
 }

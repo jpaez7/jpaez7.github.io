@@ -45,7 +45,7 @@ function init()
     camera.position.set(0.5,2,7);
     cameraControls = new OrbitControls( camera, renderer.domElement );
     cameraControls.target.set(0,1,0);
-    camera.lookAt(0,1,0);
+     
 
     // Eventos
     renderer.domElement.addEventListener('dblclick', animate );
