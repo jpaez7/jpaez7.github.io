@@ -176,7 +176,7 @@ function loadScene()
 
     // Cine
     video = document.createElement('video');
-    video.src = "./videos/Pixar.mp4";
+    video.src = "./videos/pixar.mp4";
     video.load();
     video.muted = true;
     video.play();

@@ -83,7 +83,9 @@ function init()
     direccional.position.set(-1,10,-1);
     direccional.castShadow = true;
     scene.add(direccional);
+
     scene.add(new THREE.CameraHelper(direccional.shadow.camera));
+    
     const focal = new THREE.SpotLight(0xFFFFFF,0.3);
     focal.position.set(-2,7,4);
     focal.target.position.set(0,0,0);
@@ -159,6 +161,7 @@ function loadScene()
     capsule.castShadow = true;
     capsule.receiveShadow = true;
     figures = [cubo, esfera, cone, cylinder, capsule];
+ 
     //Creamos la forma del pentagono y posicionamos sobre sus vertices a las figuras
     pentShape = new THREE.Shape();
     const pentRadius = 4;
@@ -182,14 +185,16 @@ function loadScene()
     pentObject.position.y=1;
     pentObject.position.z=0;
     pentObject.add(pent);
+    
     //PentObject puede producir sombra y recibir sombra.
     pentObject.castShadow = true;
     pentObject.receiveShadow = true;
     pentObject.add( new THREE.AxesHelper(1) );
+   
     //Agregamos el objeto a la escena
     scene.add(pentObject);
     const glloader = new GLTFLoader();
-    glloader.load( 'models/anime_lady_officer/scene.gltf', function ( gltf ) {
+    glloader.load( 'models/playerbb/scene.gltf', function ( gltf ) {
             gltf.scene.position.y = 0;
             gltf.scene.rotation.y = -Math.PI/2;
             pentObject.add( gltf.scene );

@@ -127,7 +127,6 @@ function loadScene()
     pentaFigu.position.y=1;
     pentaFigu.position.z=0;
     pentaFigu.add(pent);
-    pentaFigu.add( new THREE.AxesHelper(1) );
 
     //Agregar objeto a la escena
     scene.add(pentaFigu);
@@ -205,14 +204,20 @@ function loadGUI()
     h.add(effectController, "giroY", -180.0, 180.0, 0.025).name("Girar en Y - NO");
     h.add(effectController, "radioPent", 3, 6).name("Mover Figuras");
     h.add(effectController, "playerAnimation").name("Rebotar Modelo");
-    h.addColor(effectController, "colorsuelo").name("Color alambres - NO");
+    h.addColor(effectController, "colorsuelo").name("Color Alambres - NO");
 
     gui.onChange( event => {
         // Modificar controlador del radio y radio del pentagono
         if(event.property == "radioPent"){
             stablishPentRadius(event.value)
         }
-     })
+ /*
+        // Modificar con check box los alambres
+        if(event.property == "alambric"){
+            material.wireframe = event.value;
+        }        
+*/
+    })
 }
 
 //Funciones de Animación
@@ -241,16 +246,17 @@ function animate(event)
     if( intersecciones.length > 0 ){
         animaPlayer();
     }
-
-    intersecciones = rayo.intersectObjects(robot.children,true);
+/*
+    intersecciones = rayo.intersectObjects(modelo.children,true);
 
     if( intersecciones.length > 0 ){
-        new TWEEN.Tween( playerb.rotation ).
+        new TWEEN.Tween( playerfa.rotation ).
         to( {x:[0,0],y:[Math.PI,-Math.PI/2],z:[0,0]}, 5000 ).
         interpolation( TWEEN.Interpolation.Linear ).
         easing( TWEEN.Easing.Exponential.InOut ).
         start();
     }
+*/    
 }
 
 function update(delta)
