@@ -29,7 +29,6 @@ let renderer, scene, camera;
 let pentaForm, figuras, material, modelo, video;
 let cameraControls, effectController;
 let maFigura, maEsfera, maSuelo, maCylinder;
-let esferaCubo,cubo,esfera,suelo;
 
 // Acciones
 init();
@@ -130,7 +129,7 @@ function loadScene()
                                                    shininess: 30,
                                                    envMap: texesfera });
     maSuelo = new THREE.MeshStandardMaterial({color:"rgb(150,150,150)",map:texsuelo});
-    maCylinder = new THREE.MeshBasicMaterial({color:"rgb(150,150,150)",map:texsuelo});
+    maCylinder = new THREE.MeshBasicMaterial({color:"rgb(53,102,86)",map:texsuelo});
 
     /*******************
     * TO DO: Misma escena que en la practica anterior
@@ -334,6 +333,9 @@ function loadGUI()
         mute: true,
         colorcubo: "rgb(150,150,150)",
         playerAnimation: animaPlayer,
+        cubeAnimation: animaCubo,
+        esferaAnimation: animaEsfera,        
+        //colorsuelo: "rgb(150,150,150)"
     };
 
     // Creacion interfaz
@@ -342,10 +344,12 @@ function loadGUI()
     // Construccion del menu
     const h = gui.addFolder("Menú General");
     h.add(effectController, "mensaje").name("Práctica");
+	//h.add(effectController, "giroY", -180.0, 180.0, 0.025).name("Giro en Y");    
     h.add(effectController, "radioPent", 2, 5).name("Mover Figura");
     h.add(effectController, "alambric").name("Activar Alambres en Figuras   ");
     h.add(effectController, "playerAnimation").name("Rebotar Modelo");
-
+    h.add(effectController, "cubeAnimation").name("Girar Cubo");
+    h.add(effectController, "esferaAnimation").name("Agrandar Esfera");
     const hi = gui.addFolder("Opciones de Control")
     hi.add(effectController, "shadow").name("Sombras")
     .onChange( value =>
@@ -363,7 +367,7 @@ function loadGUI()
     })
     hi.addColor(effectController, "colorcubo")
         .name("Paleta de Colores")
-        .onChange(c=>{figures[0].material.setValues({color:c})});
+        .onChange(c=>{figuras[0].material.setValues({color:c})});
 
     const hj = gui.addFolder("Controles de Video")
     hj.add(effectController,"play");
@@ -371,11 +375,12 @@ function loadGUI()
     hj.add(effectController,"mute").onChange(v=>{video.muted = v});
 
     gui.onChange( event => {
-        //Si se modifica el controlador del radio, modificamos el radio del pentagono
+        // Modificar controlador del radio y radio del pentagono
         if(event.property == "radioPent"){
             stablishPentRadius(event.value)
         }
-        // Modificar con check box los alambres *********OJO*************
+        
+        // Modificar con check box los alambres
         if(event.property == "alambric"){
             material.wireframe = event.value;
             maEsfera.wireframe = event.value;
@@ -386,13 +391,32 @@ function loadGUI()
     })
 }
 
-//Funciones de Animación
+//Funciones de Animación para el Modelo, el Cubo y la Esfera
 
 function animaPlayer(){
     new TWEEN.Tween( modelo.position ).
         to( {x:[0,0,0],y:[0,5,0],z:[0,0,0]}, 2000 ).
         interpolation( TWEEN.Interpolation.Bezier ).
         easing( TWEEN.Easing.Bounce.Out ).
+        start();
+}
+
+function animaCubo(){
+    new TWEEN.Tween( figuras[0].rotation ).
+        to( {x:[0,0],y:[0,Math.PI*2],z:[0,0]}, 2000 ).
+        interpolation( TWEEN.Interpolation.Bezier ).
+        easing( TWEEN.Easing.Linear.None ).
+        start();
+}
+
+function animaEsfera(){
+    let originScaleX = figuras[1].scale.x
+    let originScaleY = figuras[1].scale.y
+    let originScaleZ = figuras[1].scale.z
+    new TWEEN.Tween( figuras[1].scale ).
+        to( {x:[originScaleX ,originScaleX * 4, originScaleX],y:[originScaleY ,originScaleY * 4, originScaleY],z:[originScaleZ ,originScaleZ * 4, originScaleZ]}, 2000 ).
+        interpolation( TWEEN.Interpolation.Bezier ).
+        easing( TWEEN.Easing.Bounce.InOut ).
         start();
 }
 
@@ -419,6 +443,7 @@ function update(delta)
     /*******************
     * TO DO: Actualizar tween
     *******************/
+    //esferaCubo.rotation.y = effectController.giroY * Math.PI/180;
     TWEEN.update();
 }
 

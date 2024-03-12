@@ -27,8 +27,8 @@ let renderer, scene, camera;
 /*******************
  * TO DO: Variables globales de la aplicacion
  *******************/
-let pentaForm, figuras, material, modelo;
-//, giraFiguras;
+let pentaForm, figuras, material, modelo; 
+//giraFiguras;
 let cameraControls, effectController;
 let angulo = 0;
 
@@ -191,10 +191,13 @@ function loadGUI()
     // Definicion de los controles
 	effectController = {
 		mensaje: 'Seminario #2',
-        radioPent: 4.5,
+        radioPent: 3.5,
+        alambric: true,
         giroY: 0.0,
         colorsuelo: "rgb(150,150,150)",
-        playerAnimation: animaPlayer
+        playerAnimation: animaPlayer,
+        cubeAnimation: animaCubo,
+        esferaAnimation: animaEsfera,     
 	};
 
 	// Creacion interfaz
@@ -204,21 +207,26 @@ function loadGUI()
 	const h = gui.addFolder("Menú General");
 	h.add(effectController, "mensaje").name("Práctica");
     h.add(effectController, "giroY", -180.0, 180.0, 0.025).name("Girar en Y - NO");
-    h.add(effectController, "radioPent", 3, 6).name("Mover Figuras");
+    h.add(effectController, "alambric").name("Quitar Alambres a Figuras   ");    
+    h.add(effectController, "radioPent", 2, 5).name("Mover Figuras");
     h.add(effectController, "playerAnimation").name("Rebotar Modelo");
-    h.addColor(effectController, "colorsuelo").name("Color Alambres - NO");
-
+    h.add(effectController, "cubeAnimation").name("Girar Cubo");
+    h.add(effectController, "esferaAnimation").name("Agrandar Esfera");    
+/*
+    h.addColor(effectController, "colorcubo")
+        .name("Paleta de Colores")
+        .onChange(c=>{figuras[0].material.setValues({color:c})});
+*/
     gui.onChange( event => {
         // Modificar controlador del radio y radio del pentagono
         if(event.property == "radioPent"){
             stablishPentRadius(event.value)
         }
- /*
+
         // Modificar con check box los alambres
         if(event.property == "alambric"){
             material.wireframe = event.value;
-        }        
-*/
+        }
     })
 }
 
@@ -229,6 +237,25 @@ function animaPlayer(){
         to( {x:[0,0,0],y:[0,5,0],z:[0,0,0]}, 2000 ).
         interpolation( TWEEN.Interpolation.Bezier ).
         easing( TWEEN.Easing.Bounce.Out ).
+        start();
+}
+
+function animaCubo(){
+    new TWEEN.Tween( figuras[0].rotation ).
+        to( {x:[0,0],y:[0,Math.PI*2],z:[0,0]}, 2000 ).
+        interpolation( TWEEN.Interpolation.Bezier ).
+        easing( TWEEN.Easing.Linear.None ).
+        start();
+}
+
+function animaEsfera(){
+    let originScaleX = figuras[1].scale.x
+    let originScaleY = figuras[1].scale.y
+    let originScaleZ = figuras[1].scale.z
+    new TWEEN.Tween( figuras[1].scale ).
+        to( {x:[originScaleX ,originScaleX * 4, originScaleX],y:[originScaleY ,originScaleY * 4, originScaleY],z:[originScaleZ ,originScaleZ * 4, originScaleZ]}, 2000 ).
+        interpolation( TWEEN.Interpolation.Bezier ).
+        easing( TWEEN.Easing.Bounce.InOut ).
         start();
 }
 
@@ -248,17 +275,6 @@ function animate(event)
     if( intersecciones.length > 0 ){
         animaPlayer();
     }
-/*
-    intersecciones = rayo.intersectObjects(modelo.children,true);
-
-    if( intersecciones.length > 0 ){
-        new TWEEN.Tween( playerfa.rotation ).
-        to( {x:[0,0],y:[Math.PI,-Math.PI/2],z:[0,0]}, 5000 ).
-        interpolation( TWEEN.Interpolation.Linear ).
-        easing( TWEEN.Easing.Exponential.InOut ).
-        start();
-    }
-*/    
 }
 
 function update(delta)
@@ -266,7 +282,7 @@ function update(delta)
     /*******************
     * TO DO: Actualizar tween
     *******************/
-    //angulo += 0.01;
+    angulo += 0.01;
     
     // Lectura de controles en GUI (es mejor hacerlo con onChange)
     //cubo.material.setValues( { color: effectController.colorsuelo } );
