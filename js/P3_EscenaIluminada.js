@@ -28,7 +28,7 @@ let renderer, scene, camera;
  *******************/
 let pentaForm, figuras, material, modelo, video;
 let cameraControls, effectController;
-let maCubo, maEsfera, maSuelo, matcylinder;
+let maFigura, maEsfera, maSuelo, maCylinder;
 let esferaCubo,cubo,esfera,suelo;
 
 // Acciones
@@ -62,11 +62,14 @@ function init()
     /*******************
     * TO DO: Añadir manejador de camara (OrbitControls)
     *******************/
-    camera.lookAt( new THREE.Vector3(0,1,0) );  // Linea no en S3
+    camera.lookAt( new THREE.Vector3(0,1,0) );
     cameraControls = new OrbitControls( camera, renderer.domElement );
     cameraControls.target.set(0,1,0);
     camera.lookAt(0,1,0);
     
+    // Eventos
+    renderer.domElement.addEventListener('dblclick', animate );
+
     // Luces
     /*******************
      * TO DO: Añadir luces y habilitar sombras
@@ -77,17 +80,13 @@ function init()
     const ambiental = new THREE.AmbientLight(0x222222);
     scene.add(ambiental);
     const direccional = new THREE.DirectionalLight(0xFFFFFF,0.3);
-    direccional.position.set(-1,1,-1);
+    direccional.position.set(-1,10,-1);
     direccional.castShadow = true;
     scene.add(direccional);
-
-    // OJO
     scene.add(new THREE.CameraHelper(direccional.shadow.camera));
-    
     const puntual = new THREE.PointLight(0xFFFFFF,0.5);
     puntual.position.set(2,7,-4);
     scene.add(puntual);
-    
     const focal = new THREE.SpotLight(0xFFFFFF,0.3);
     focal.position.set(-2,7,4);
     focal.target.position.set(0,0,0);
@@ -98,10 +97,6 @@ function init()
     focal.shadow.camera.fov = 80;
     scene.add(focal);
     scene.add(new THREE.CameraHelper(focal.shadow.camera));
-
-    // Eventos
-    window.addEventListener('resize', updateAspectRatio );
-    renderer.domElement.addEventListener('dblclick', animate );
 }
 
 function loadScene()
@@ -113,7 +108,7 @@ function loadScene()
      * - De entorno
      *******************/
     const path ="./images/";
-    const texcubo = new THREE.TextureLoader().load(path+"metal_128.jpg");
+    const texfigura = new THREE.TextureLoader().load(path+"metal_128.jpg");
     const texsuelo = new THREE.TextureLoader().load(path+"sports.jpg");
     texsuelo.repeat.set(4,3);
     texsuelo.wrapS= texsuelo.wrapT = THREE.MirroredRepeatWrapping;
@@ -127,15 +122,15 @@ function loadScene()
      * TO DO: Crear materiales y aplicar texturas
      * - Uno basado en Lambert
      * - Uno basado en Phong
-     * - Uno basado en Basic  OJO con estas variables
+     * - Uno basado en Basic
      *******************/
-    maCubo = new THREE.MeshLambertMaterial({color:'yellow',map:texfigure});
-    maEsfera = new THREE.MeshPhongMaterial({color:'white',
+    maFigura = new THREE.MeshLambertMaterial({color:'orange',map:texfigura});
+    maEsfera = new THREE.MeshPhongMaterial({color:'White',
                                                    specular:'gray',
                                                    shininess: 30,
                                                    envMap: texesfera });
     maSuelo = new THREE.MeshStandardMaterial({color:"rgb(150,150,150)",map:texsuelo});
-    matcylinder = new THREE.MeshBasicMaterial({color:"rgb(150,150,150)",map:texsuelo});
+    maCylinder = new THREE.MeshBasicMaterial({color:"rgb(150,150,150)",map:texsuelo});
 
     /*******************
     * TO DO: Misma escena que en la practica anterior
@@ -143,42 +138,44 @@ function loadScene()
     *******************/
     // *** Selección de presentación en color del Mesh Básico
     
-    material = new THREE.MeshBasicMaterial( { color: 'white', wireframe: true } );
-    //material = new THREE.MeshNormalMaterial( {wireframe:false} );
+    //material = new THREE.MeshBasicMaterial( { color: 'white', wireframe: true } );
+    material = new THREE.MeshNormalMaterial( {wireframe:false} );
 
+    // Geometría de las Figuras
     const geoCubo = new THREE.BoxGeometry( 2, 2, 2 );
     const geoEsfera = new THREE.SphereGeometry( 1, 20 ,20 );
     const geoDodeca = new THREE.DodecahedronGeometry( 1, 1, 1);
     const geoCylinder = new THREE.CylinderGeometry( 1, 1, 2);
     const geoIcosa = new THREE.IcosahedronGeometry(1, 1, 2);
     
-    const cubo = new THREE.Mesh( geoCubo, maCubo );
-    capsule.castShadow = true;
-    capsule.receiveShadow = true;
+    //Crear mesh con geometría, material, hacer y dar sombras
+    const cubo = new THREE.Mesh( geoCubo, maFigura );
+    cubo.castShadow = true;
+    cubo.receiveShadow = true;
     const esfera = new THREE.Mesh( geoEsfera, maEsfera );
-    capsule.castShadow = true;
-    capsule.receiveShadow = true;
-    const dodeca = new THREE.Mesh( geoDodeca, material );
-    capsule.castShadow = true;
-    capsule.receiveShadow = true;
-    const cylinder = new THREE.Mesh( geoCylinder, material );
-    capsule.castShadow = true;
-    capsule.receiveShadow = true;
-    const icosa = new THREE.Mesh( geoIcosa, material );
-    capsule.castShadow = true;
-    capsule.receiveShadow = true;
+    esfera.castShadow = true;
+    esfera.receiveShadow = true;
+    const dodeca = new THREE.Mesh( geoDodeca, maFigura );
+    dodeca.castShadow = true;
+    dodeca.receiveShadow = true;
+    const cylinder = new THREE.Mesh( geoCylinder, maCylinder );
+    cylinder.castShadow = true;
+    cylinder.receiveShadow = true;
+    const icosa = new THREE.Mesh( geoIcosa, maFigura );
+    icosa.castShadow = true;
+    icosa.receiveShadow = true;
 
     figuras = [cubo, esfera, dodeca, cylinder, icosa];
 
     // Elaborar el pentagono y colocar figuras en cada vertice
 
     pentaForm = new THREE.Shape();
-    const pentRadius = 2;
+    const pentRadius = 4;
     stablishPentRadius(pentRadius)
 
     // Crear geometría del pentagono
     const geoPent = new THREE.ShapeGeometry( pentaForm );
-    const pent = new THREE.Mesh( geoPent, material );
+    const pent = new THREE.Mesh( geoPent, maFigura );
 
     // Crear y dar sombra a pent
     pent.castShadow = true;
@@ -257,7 +254,7 @@ function loadScene()
      paredes.push( new THREE.MeshBasicMaterial({side:THREE.BackSide,
                    map: new THREE.TextureLoader().load(path+"posCFy.jpg")}) );
      paredes.push( new THREE.MeshBasicMaterial({side:THREE.BackSide,
-                   map: new THREE.TextureLoader().load(path+"negCfy.jpg")}) );
+                   map: new THREE.TextureLoader().load(path+"negCFy.jpg")}) );
      paredes.push( new THREE.MeshBasicMaterial({side:THREE.BackSide,
                    map: new THREE.TextureLoader().load(path+"posPFz.jpg")}) );
      paredes.push( new THREE.MeshBasicMaterial({side:THREE.BackSide,
@@ -277,13 +274,14 @@ function loadScene()
 
     // Video en Pantalla
     const texvideo = new THREE.VideoTexture(video);
+
     const pantalla = new THREE.Mesh(new THREE.PlaneGeometry(20,6, 4,4), 
                                     new THREE.MeshBasicMaterial({map:texvideo}));
     pantalla.position.set(0,4.5,-5);
     scene.add(pantalla);
+
 /*
     // Video en Suelo
-    const texvideo = new THREE.VideoTexture(video);
     const suelo = new THREE.Mesh(new THREE.PlaneGeometry(10,10, 10,10), 
                                     new THREE.MeshBasicMaterial({map:texvideo}));
     suelo.rotation.x = -Math.PI / 2;
@@ -328,7 +326,7 @@ function loadGUI()
     // Definicion de los controles
     effectController = {
         mensaje: 'Seminario #3',
-        radioPent: 4.0,
+        radioPent: 3.5,
         alambric: false,
         shadow: true,
         play: function(){video.play();},
@@ -336,13 +334,6 @@ function loadGUI()
         mute: true,
         colorcubo: "rgb(150,150,150)",
         playerAnimation: animaPlayer,
-/*
-        cubeAnimation: animateCube,
-        esferaAnimation: animateEsfera,
-        coneAnimation: animateCone,
-        cylinderAnimation: animateCylinder,
-        capsuleAnimation: animateCapsule
-*/    
     };
 
     // Creacion interfaz
@@ -351,16 +342,10 @@ function loadGUI()
     // Construccion del menu
     const h = gui.addFolder("Menú General");
     h.add(effectController, "mensaje").name("Práctica");
-    h.add(effectController, "radioPent", 0, 10).name("Mover Figura");
-    h.add(effectController, "alambric").name("Cambiar Alambres");
+    h.add(effectController, "radioPent", 2, 5).name("Mover Figura");
+    h.add(effectController, "alambric").name("Activar Alambres en Figuras   ");
     h.add(effectController, "playerAnimation").name("Rebotar Modelo");
-/*    
-    h.add(effectController, "cubeAnimation").name("Activar animación cubo");
-    h.add(effectController, "esferaAnimation").name("Activar animación esfera");
-    h.add(effectController, "coneAnimation").name("Activar animación cono");
-    h.add(effectController, "cylinderAnimation").name("Activar animación cilindro");
-    h.add(effectController, "capsuleAnimation").name("Activar animación capsula");
-*/
+
     const hi = gui.addFolder("Opciones de Control")
     hi.add(effectController, "shadow").name("Sombras")
     .onChange( value =>
@@ -390,13 +375,13 @@ function loadGUI()
         if(event.property == "radioPent"){
             stablishPentRadius(event.value)
         }
-        // Modificar con check box los alambres
+        // Modificar con check box los alambres *********OJO*************
         if(event.property == "alambric"){
-            maCubo.wireframe = event.value;
+            material.wireframe = event.value;
             maEsfera.wireframe = event.value;
-            matfigure.wireframe = event.value;
+            maFigura.wireframe = event.value;
             maSuelo.wireframe = event.value;
-            matcylinder.wireframe = event.value;
+            maCylinder.wireframe = event.value;
         }
     })
 }
@@ -427,17 +412,6 @@ function animate(event)
     if( intersecciones.length > 0 ){
         animaPlayer();
     }
-/*
-    intersecciones = rayo.intersectObjects(modelo.children,true);
-
-    if( intersecciones.length > 0 ){
-        new TWEEN.Tween( playerfa.rotation ).
-        to( {x:[0,0],y:[Math.PI,-Math.PI/2],z:[0,0]}, 5000 ).
-        interpolation( TWEEN.Interpolation.Linear ).
-        easing( TWEEN.Easing.Exponential.InOut ).
-        start();
-    }
-    */
 }
 
 function update(delta)

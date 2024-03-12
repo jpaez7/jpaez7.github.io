@@ -63,6 +63,7 @@ function init()
     cameraControls.target.set(0,1,0);
     camera.lookAt( new THREE.Vector3(0,1,0) );
 
+
      // Eventos
      renderer.domElement.addEventListener('dblclick', animate );
 }
@@ -127,6 +128,7 @@ function loadScene()
     pentaFigu.position.y=1;
     pentaFigu.position.z=0;
     pentaFigu.add(pent);
+    pentaFigu.add( new THREE.AxesHelper(1) );
 
     //Agregar objeto a la escena
     scene.add(pentaFigu);
@@ -268,7 +270,7 @@ function update(delta)
     
     // Lectura de controles en GUI (es mejor hacerlo con onChange)
     //cubo.material.setValues( { color: effectController.colorsuelo } );
-	//giraFiguras.rotation.y = effectController.giroY * Math.PI/180;
+	//pentaFigu.rotation.y = effectController.giroY * Math.PI/180;
 	TWEEN.update();
 }
 
