@@ -220,22 +220,22 @@ function loadScene()
     
     // Cargamos piezas y otros objetos
     loadPieces()
-    // loadLady();
+    loadPersona();
 
     // Crear Habitacion
     const paredes = [];
     paredes.push( new THREE.MeshBasicMaterial({side:THREE.BackSide,
-                  map: new THREE.TextureLoader().load(path+"posJAx.jpg")}) );
-    paredes.push( new THREE.MeshBasicMaterial({side:THREE.BackSide,
-                  map: new THREE.TextureLoader().load(path+"negJAx.jpg")}) );
-    paredes.push( new THREE.MeshBasicMaterial({side:THREE.BackSide,
                   map: new THREE.TextureLoader().load(path+"posPAy.jpg")}) );
+    paredes.push( new THREE.MeshBasicMaterial({side:THREE.BackSide,
+                  map: new THREE.TextureLoader().load(path+"posPAx.jpg")}) );
+    paredes.push( new THREE.MeshBasicMaterial({side:THREE.BackSide,
+                  map: new THREE.TextureLoader().load(path+"negPAx.jpg")}) );
+    paredes.push( new THREE.MeshBasicMaterial({side:THREE.BackSide,
+                  map: new THREE.TextureLoader().load(path+"posPAz.jpg")}) );
     paredes.push( new THREE.MeshBasicMaterial({side:THREE.BackSide,
                   map: new THREE.TextureLoader().load(path+"negPAy.jpg")}) );
     paredes.push( new THREE.MeshBasicMaterial({side:THREE.BackSide,
-                  map: new THREE.TextureLoader().load(path+"posJAz.jpg")}) );
-    paredes.push( new THREE.MeshBasicMaterial({side:THREE.BackSide,
-                  map: new THREE.TextureLoader().load(path+"negJAz.jpg")}) );
+                  map: new THREE.TextureLoader().load(path+"negPAz.jpg")}) );
     const habitacion = new THREE.Mesh( new THREE.BoxGeometry(40,40,40),paredes);
     scene.add(habitacion);
 
@@ -271,9 +271,9 @@ function loadTable()
         gltf.scene.position.z = 0;
 
         // Establecer escala de la mesa
-        gltf.scene.scale.x = gltf.scene.scale.x*3
-        gltf.scene.scale.y = gltf.scene.scale.y*3
-        gltf.scene.scale.z = gltf.scene.scale.z*3
+        gltf.scene.scale.x = gltf.scene.scale.x*3.3
+        gltf.scene.scale.y = gltf.scene.scale.y*3.3
+        gltf.scene.scale.z = gltf.scene.scale.z*3.3
         gltf.scene.name = 'mesa';
         const mesa = gltf.scene;
      
@@ -292,22 +292,24 @@ function loadTable()
  
     } );
 }
-/*
-function loadLady(){
+
+function loadPersona(){
     // Importar un modelo en gltf
     const glloader = new GLTFLoader();
 
-    glloader.load( 'models/playerFA/scene.gltf', function ( gltf ) {
+    glloader.load( 'models/Persona/scene.gltf', function ( gltf ) {
         gltf.scene.position.y = 0;
         //gltf.scene.rotation.y = -Math.PI/2;
-        gltf.scene.scale.x = gltf.scene.scale.x * 4;
-        gltf.scene.scale.y = gltf.scene.scale.y * 4;
-        gltf.scene.scale.z = gltf.scene.scale.z * 4;
+        gltf.scene.scale.x = gltf.scene.scale.x * 0.03;
+        gltf.scene.scale.y = gltf.scene.scale.y * 0.03;
+        gltf.scene.scale.z = gltf.scene.scale.z * 0.03;
         //gltf.scene.position.x = 4;
-        gltf.scene.position.z = -4;
-        console.log("PLAYER FA");
+        gltf.scene.position.z = -3;
+        
+        console.log("PERSONA");
         const model = gltf.scene;
-        //La chica produce y recibe sombras.
+
+        // Modelo produce y recibe sombras.
         gltf.scene.traverse(ob=>{
             if(ob.isObject3D) {
                 ob.castShadow = true;
@@ -323,26 +325,31 @@ function loadLady(){
     
     } );
 }
-*/
+
 function loadTablero(){
    // Importar un modelo en gltf
    const glloader = new GLTFLoader();
 
    glloader.load( 'models/tablero/scene.gltf', function ( gltf ) {
-       gltf.scene.position.y = 0;
-       gltf.scene.position.x = 0;
-       gltf.scene.position.z = 0;
-       gltf.scene.rotation.y = -Math.PI / 2;
-       gltf.scene.name = 'tablero';
-       const tablero = gltf.scene;
+        gltf.scene.position.y = 0;
+        gltf.scene.position.x = 0;
+        gltf.scene.position.z = 0;
+        gltf.scene.rotation.y = -Math.PI / 2;
 
-       // Agregar modelo y relacionar
-       boardObject.add( tablero );
-       gltf.scene.traverse(ob=>{
-        if(ob.isObject3D){
-             ob.castShadow = true;
-             ob.receiveShadow = false;
-        }
+        // Establecer escala del tablero
+        gltf.scene.scale.x = gltf.scene.scale.x*240
+        gltf.scene.scale.y = gltf.scene.scale.y*240
+        gltf.scene.scale.z = gltf.scene.scale.z*240
+        gltf.scene.name = 'tablero';
+        const tablero = gltf.scene;       
+
+        // Agregar modelo y relacionar
+        boardObject.add( tablero );
+        gltf.scene.traverse(ob=>{
+            if(ob.isObject3D){
+                ob.castShadow = true;
+                ob.receiveShadow = false;
+            }
         })
    
    }, undefined, function ( error ) {
@@ -722,18 +729,20 @@ function moveSelectedPiece(newPositionX, newPositionZ){
         start();
 }
 
+// Interfaz de usuario
 function setupGUI()
 {
+    // Definición de los controles
     effectController = {
 		mensaje: 'Proyecto Bloque #1',
-        direccionalIntensity: 0.8,
-        focalIntensity: 0.3,
-        direccionalPosX: 5,
-        direccionalPosY: 6,
-        direccionalPosZ: -5,
-        focalPosX: 5,
-        focalPosY: 10,
-        focalPosZ: -5,
+        direccionalIntensity: 0.5,
+        direccionalPosX: 2,
+        direccionalPosY: 5,
+        direccionalPosZ: 0,
+        focalIntensity: 0.5,        
+        focalPosX: 2,
+        focalPosY: 5,
+        focalPosZ: 0,
         direccionalShadow: true,
         focalShadow: true,
         enableDireccinalHelper: true,
@@ -743,10 +752,12 @@ function setupGUI()
         mute: true
     }
 
-    // Creacion interfaz
+    // Crear interfaz
 	const gui = new GUI();
 
-	// Construccion Menu de Control
+	// Construir Menu General
+    const h = gui.addFolder("Menú General");
+    h.add(effectController, "mensaje").name("Aplicativo");
 	const hd = gui.addFolder("Luz Direccional");
     hd.add(effectController, "direccionalIntensity", 0, 1, 0.1).name("Intensidad").onChange(v => {
         direccional.intensity = v;
