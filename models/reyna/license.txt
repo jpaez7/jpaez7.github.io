@@ -1,0 +1,11 @@
+Model Information:
+* title:	QUEEN
+* source:	https://sketchfab.com/3d-models/queen-f2c8c42a224940b388cb6c6a40e95f64
+* author:	no_mad (https://sketchfab.com/outofvoidart)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "QUEEN" (https://sketchfab.com/3d-models/queen-f2c8c42a224940b388cb6c6a40e95f64) by no_mad (https://sketchfab.com/outofvoidart) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

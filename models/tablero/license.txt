@@ -1,0 +1,11 @@
+Model Information:
+* title:	CHESS
+* source:	https://sketchfab.com/3d-models/chess-f004f7515fc544788143f7c799d1c598
+* author:	Life_is_awsome (https://sketchfab.com/Life_is_awsome)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "CHESS" (https://sketchfab.com/3d-models/chess-f004f7515fc544788143f7c799d1c598) by Life_is_awsome (https://sketchfab.com/Life_is_awsome) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

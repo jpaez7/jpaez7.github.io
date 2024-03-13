@@ -1,0 +1,466 @@
+{
+  "accessors": [
+    {
+      "bufferView": 2,
+      "componentType": 5126,
+      "count": 3857,
+      "max": [
+        1.7196507453918457,
+        0.499997615814209,
+        1.6320334672927856
+      ],
+      "min": [
+        -1.9628328084945679,
+        -0.5490815043449402,
+        -1.632033348083496
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 46284,
+      "componentType": 5126,
+      "count": 3857,
+      "max": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "min": [
+        -1.0,
+        -0.9999930262565613,
+        -1.0
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 0,
+      "componentType": 5125,
+      "count": 17850,
+      "type": "SCALAR"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 92568,
+      "componentType": 5126,
+      "count": 1926,
+      "max": [
+        0.995410680770874,
+        0.9991416931152344,
+        0.995427131652832
+      ],
+      "min": [
+        -0.9954106211662292,
+        -0.9991493225097656,
+        -0.9954272508621216
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 115680,
+      "componentType": 5126,
+      "count": 1926,
+      "max": [
+        0.9879334568977356,
+        0.9984941482543945,
+        0.9879140853881836
+      ],
+      "min": [
+        -0.9879332184791565,
+        -0.9984942674636841,
+        -0.9879142045974731
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 1,
+      "componentType": 5126,
+      "count": 1926,
+      "max": [
+        1.0000001192092896,
+        1.0
+      ],
+      "min": [
+        0.0,
+        0.0
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 0,
+      "byteOffset": 71400,
+      "componentType": 5125,
+      "count": 10356,
+      "type": "SCALAR"
+    },
+    {
+      "bufferView": 3,
+      "componentType": 5126,
+      "count": 147,
+      "max": [
+        4.875
+      ],
+      "min": [
+        0.0416666679084301
+      ],
+      "type": "SCALAR"
+    },
+    {
+      "bufferView": 4,
+      "componentType": 5126,
+      "count": 147,
+      "max": [
+        16.30799674987793,
+        7.021986961364746,
+        11.9573335647583
+      ],
+      "min": [
+        -21.383371353149414,
+        7.021986961364746,
+        -11.668123245239258
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 3,
+      "byteOffset": 588,
+      "componentType": 5126,
+      "count": 147,
+      "max": [
+        4.875
+      ],
+      "min": [
+        0.0416666679084301
+      ],
+      "type": "SCALAR"
+    },
+    {
+      "bufferView": 5,
+      "componentType": 5126,
+      "count": 147,
+      "max": [
+        6.36549230328547e-17,
+        0.9999988675117493,
+        6.36549230328547e-17,
+        0.9999983310699463
+      ],
+      "min": [
+        0.0,
+        -0.6533705592155457,
+        0.0,
+        -0.040379319339990616
+      ],
+      "type": "VEC4"
+    }
+  ],
+  "animations": [
+    {
+      "channels": [
+        {
+          "sampler": 0,
+          "target": {
+            "node": 11,
+            "path": "translation"
+          }
+        },
+        {
+          "sampler": 1,
+          "target": {
+            "node": 11,
+            "path": "rotation"
+          }
+        }
+      ],
+      "name": "Take 001",
+      "samplers": [
+        {
+          "input": 7,
+          "interpolation": "LINEAR",
+          "output": 8
+        },
+        {
+          "input": 9,
+          "interpolation": "LINEAR",
+          "output": 10
+        }
+      ]
+    }
+  ],
+  "asset": {
+    "extras": {
+      "author": "anagaldino (https://sketchfab.com/anagaldino)",
+      "license": "CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)",
+      "source": "https://sketchfab.com/3d-models/uma-mesa-qualquer-6cf60796723049c4a71a46ed0ec4ff93",
+      "title": "uma mesa qualquer"
+    },
+    "generator": "Sketchfab-14.80.0",
+    "version": "2.0"
+  },
+  "bufferViews": [
+    {
+      "buffer": 0,
+      "byteLength": 112824,
+      "name": "floatBufferViews",
+      "target": 34963
+    },
+    {
+      "buffer": 0,
+      "byteLength": 15408,
+      "byteOffset": 112824,
+      "byteStride": 8,
+      "name": "floatBufferViews",
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteLength": 138792,
+      "byteOffset": 128232,
+      "byteStride": 12,
+      "name": "floatBufferViews",
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteLength": 1176,
+      "byteOffset": 267024,
+      "name": "floatBufferViews"
+    },
+    {
+      "buffer": 0,
+      "byteLength": 1764,
+      "byteOffset": 268200,
+      "byteStride": 12,
+      "name": "floatBufferViews"
+    },
+    {
+      "buffer": 0,
+      "byteLength": 2352,
+      "byteOffset": 269964,
+      "byteStride": 16,
+      "name": "floatBufferViews"
+    }
+  ],
+  "buffers": [
+    {
+      "byteLength": 272316,
+      "uri": "scene.bin"
+    }
+  ],
+  "materials": [
+    {
+      "doubleSided": true,
+      "name": "lambert1",
+      "pbrMetallicRoughness": {
+        "baseColorFactor": [
+          0.021807634948988765,
+          0.010479663644408067,
+          0.007149217809741786,
+          1.0
+        ],
+        "roughnessFactor": 0.6
+      }
+    }
+  ],
+  "meshes": [
+    {
+      "name": "pCube1_lambert1_0",
+      "primitives": [
+        {
+          "attributes": {
+            "NORMAL": 1,
+            "POSITION": 0
+          },
+          "indices": 2,
+          "material": 0,
+          "mode": 4
+        }
+      ]
+    },
+    {
+      "name": "pSphere1_lambert1_0",
+      "primitives": [
+        {
+          "attributes": {
+            "NORMAL": 4,
+            "POSITION": 3,
+            "TEXCOORD_0": 5
+          },
+          "indices": 6,
+          "material": 0,
+          "mode": 4
+        }
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "children": [
+        1
+      ],
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        2.220446049250313e-16,
+        -1.0,
+        0.0,
+        0.0,
+        1.0,
+        2.220446049250313e-16,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "name": "Sketchfab_model"
+    },
+    {
+      "children": [
+        2
+      ],
+      "matrix": [
+        0.009999999776482582,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.009999999776482582,
+        0.0,
+        0.0,
+        -0.009999999776482582,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "name": "51d9d31e4dbc4c2d9469a9f5ee068c6d.fbx"
+    },
+    {
+      "children": [
+        3
+      ],
+      "name": "Object_2"
+    },
+    {
+      "children": [
+        4,
+        5,
+        6,
+        8,
+        10,
+        11
+      ],
+      "name": "RootNode"
+    },
+    {
+      "name": "nurbsCube1",
+      "scale": [
+        0.678172767162323,
+        5.296567916870117,
+        0.7903585433959961
+      ],
+      "translation": [
+        0.008388837799429893,
+        2.7397429943084717,
+        0.024588972330093384
+      ]
+    },
+    {
+      "name": "nurbsCube2",
+      "scale": [
+        0.8482518196105957,
+        4.807878494262695,
+        0.8211004137992859
+      ],
+      "translation": [
+        0.0,
+        2.6058812141418457,
+        0.0
+      ]
+    },
+    {
+      "children": [
+        7
+      ],
+      "name": "pCube1",
+      "scale": [
+        0.45528462529182434,
+        3.18850040435791,
+        0.42668336629867554
+      ],
+      "translation": [
+        0.0,
+        6.6374053955078125,
+        0.0
+      ]
+    },
+    {
+      "mesh": 0,
+      "name": "pCube1_lambert1_0"
+    },
+    {
+      "children": [
+        9
+      ],
+      "name": "pSphere1",
+      "scale": [
+        1.9549908638000488,
+        0.1762450784444809,
+        1.843000054359436
+      ],
+      "translation": [
+        0.005932980217039585,
+        8.194025993347168,
+        0.008182221092283726
+      ]
+    },
+    {
+      "mesh": 1,
+      "name": "pSphere1_lambert1_0"
+    },
+    {
+      "name": "curve1",
+      "translation": [
+        0.0,
+        4.281216144561768,
+        0.0
+      ]
+    },
+    {
+      "children": [
+        12
+      ],
+      "name": "camera1",
+      "rotation": [
+        1.8659834734269267e-17,
+        0.8428643345832825,
+        1.8659834734269267e-17,
+        0.5381261110305786
+      ],
+      "translation": [
+        9.036334037780762,
+        7.021986961364746,
+        9.89102840423584
+      ]
+    },
+    {
+      "name": "Object_12"
+    }
+  ],
+  "scene": 0,
+  "scenes": [
+    {
+      "name": "Sketchfab_Scene",
+      "nodes": [
+        0
+      ]
+    }
+  ]
+}

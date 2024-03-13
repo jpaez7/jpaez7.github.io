@@ -1,0 +1,11 @@
+Model Information:
+* title:	KING
+* source:	https://sketchfab.com/3d-models/king-1ea25590f119445bb4961b88725ff2cf
+* author:	outofvoidart (https://sketchfab.com/outofvoidart)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "KING" (https://sketchfab.com/3d-models/king-1ea25590f119445bb4961b88725ff2cf) by outofvoidart (https://sketchfab.com/outofvoidart) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
