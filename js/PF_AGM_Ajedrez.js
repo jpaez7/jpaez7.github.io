@@ -29,12 +29,14 @@ import {GUI} from "../lib/lil-gui.module.min.js";
  *******************/
 
 // Estandar
-let renderer, scene, camera, cameraLady;
-let cameraControls, effectController;
+let renderer, scene, camera;
 
 // Golobales
 let tableObject;
 let boardObject;
+let cameraControls, effectController;
+let video, camaraOrtografica;
+//let maFigura, maEsfera, maSuelo, maCylinder, camaraOrtografica;
 
 // Luces direccional y focal.
 let direccional;
@@ -74,7 +76,7 @@ function init()
     // Motor de render
     renderer = new THREE.WebGLRenderer();
     renderer.setSize( window.innerWidth, window.innerHeight );
-    // renderer.autoClear = false;
+    renderer.autoClear = false;
 
     /*******************
     * TO DO: Completar el motor de render, el canvas y habilitar
@@ -94,9 +96,9 @@ function init()
      * a elegir. La camara perspectiva debe manejarse con OrbitControls
      * mientras que la ortografica debe ser fija
      *******************/
-    //Crear camara perspectiva
+    //Crear camaras
     const ar = window.innerWidth/window.innerHeight;
-    camera= new THREE.PerspectiveCamera(75,ar,1,100);
+    camera = new THREE.PerspectiveCamera(75,ar,1,100);
     camera.position.set( 0.5, 2, 7 );
     cameraControls = new OrbitControls( camera, renderer.domElement );
     cameraControls.target.set(0,1,0);
@@ -156,20 +158,20 @@ function loadScene()
      * TO DO: Cargar Escena
      *******************/
     // Texturas
-    //const texsuelo = new THREE.TextureLoader().load("images/chess/baldosas.jpg");
+    const texSuelo = new THREE.TextureLoader().load("images/metal_128.jpg");
 
     // Material del suelo
-    const materialSuelo = new THREE.MeshStandardMaterial({map:texsuelo});
-    const suelo = new THREE.Mesh( new THREE.PlaneGeometry(15,15, 15,15), materialSuelo );
-    const path =".images/"
-    const entorno = [ path+"posJAx.jpg", path+"negJAx.jpg",
+    const matSuelo = new THREE.MeshStandardMaterial({color:"rgb(150,150,150)",map:texSuelo});
+    const suelo = new THREE.Mesh( new THREE.PlaneGeometry(15,15, 15,15), matSuelo );
+    const path ="images/"
+    const entorno = [ path+"posPAx.jpg", path+"negPAx.jpg",
                       path+"posPAy.jpg", path+"negPAy.jpg",
-                      path+"posJAz.jpg", path+"negJAz.jpg"];
-    const texesfera = new THREE.CubeTextureLoader().load(entorno);
-    const matesfera = new THREE.MeshPhongMaterial({color:'white',
+                      path+"posPAz.jpg", path+"negPAz.jpg"];
+    const texCubo = new THREE.CubeTextureLoader().load(entorno);
+    const maFigura = new THREE.MeshPhongMaterial({color:'white',
                                                    specular:'gray',
                                                    shininess: 30,
-                                                   envMap: texesfera });
+                                                   envMap: texCubo });
     suelo.receiveShadow = true;
     suelo.rotation.x = -Math.PI / 2;
     scene.add(suelo);
@@ -199,13 +201,24 @@ function loadScene()
     
     // Mover tablero
     boardObject.position.y = 3.3
-/*    
-    //Crear una figura geometrica
-
-
     
-*/    
-    // Cargamos piezas
+    //Crear una figura geometrica
+    const geoCubo = new THREE.BoxGeometry( 1, 20,20 );
+    const esfera = new THREE.Mesh(geoCubo, maFigura)
+    esfera.position.x = -1.9;
+    esfera.position.y = 3.5;
+    esfera.scale.x = esfera.scale.x/3;
+    esfera.scale.y = esfera.scale.y/3;
+    esfera.scale.z = esfera.scale.z/3;
+    // Activar sombras sobre la figura
+    esfera.traverse(ob=>{
+        if(ob.isObject3D){
+             ob.castShadow = true;
+             ob.receiveShadow = true;
+        }
+    })
+    
+    // Cargamos piezas y otros objetos
     loadPieces()
     // loadLady();
 
@@ -226,6 +239,23 @@ function loadScene()
     const habitacion = new THREE.Mesh( new THREE.BoxGeometry(40,40,40),paredes);
     scene.add(habitacion);
 
+    /******************
+     * TO DO: Asociar una textura de vídeo al suelo
+     ******************/
+    video = document.createElement('video');
+    video.src = "videos/ChampionChess.mp4";
+    video.load();
+    video.muted = true;
+    video.play();
+
+    // Video en Pantalla
+    const texvideo = new THREE.VideoTexture(video);
+
+    const pantalla = new THREE.Mesh(new THREE.PlaneGeometry(20,6, 4,4), 
+                                    new THREE.MeshBasicMaterial({map:texvideo}));
+    pantalla.position.set(0,4.5,-5);
+    scene.add(pantalla);
+
     //Añadimos ejes a la escena.
     //scene.add( new THREE.AxesHelper(3) );
 }
@@ -235,34 +265,39 @@ function loadTable()
     // Importar un modelo en gltf
     const glloader = new GLTFLoader();
 
-     glloader.load( 'models/mesa01/scene.gltf', function ( gltf ) {
-     gltf.scene.position.y = 0;
-     gltf.scene.position.x = 0;
-     gltf.scene.position.z = 0;
-     gltf.scene.name = 'mesa';
-     const mesa = gltf.scene;
+     glloader.load( 'models/mesa02/scene.gltf', function ( gltf ) {
+        gltf.scene.position.y = 0;
+        gltf.scene.position.x = 0;
+        gltf.scene.position.z = 0;
+
+        // Establecer escala de la mesa
+        gltf.scene.scale.x = gltf.scene.scale.x*3
+        gltf.scene.scale.y = gltf.scene.scale.y*3
+        gltf.scene.scale.z = gltf.scene.scale.z*3
+        gltf.scene.name = 'mesa';
+        const mesa = gltf.scene;
      
-     // Agregar modelo y relacionar
-     tableObject.add(mesa);
-     gltf.scene.traverse(ob=>{
-        if(ob.isObject3D){
-             ob.castShadow = true;
-             ob.receiveShadow = false;
-        }
+        // Agregar modelo y relacionar
+        tableObject.add(mesa);
+        gltf.scene.traverse(ob=>{
+            if(ob.isObject3D){
+                ob.castShadow = true;
+                ob.receiveShadow = false;
+            }
     })
  
     }, undefined, function ( error ) {
  
      console.error( error );
  
-     } );
+    } );
 }
 /*
 function loadLady(){
     // Importar un modelo en gltf
     const glloader = new GLTFLoader();
 
-    glloader.load( 'models/anime_lady_officer/scene.gltf', function ( gltf ) {
+    glloader.load( 'models/playerFA/scene.gltf', function ( gltf ) {
         gltf.scene.position.y = 0;
         //gltf.scene.rotation.y = -Math.PI/2;
         gltf.scene.scale.x = gltf.scene.scale.x * 4;
@@ -270,7 +305,7 @@ function loadLady(){
         gltf.scene.scale.z = gltf.scene.scale.z * 4;
         //gltf.scene.position.x = 4;
         gltf.scene.position.z = -4;
-        console.log("LADY OFFICER");
+        console.log("PLAYER FA");
         const model = gltf.scene;
         //La chica produce y recibe sombras.
         gltf.scene.traverse(ob=>{
@@ -320,22 +355,22 @@ function loadTablero(){
 function loadPieces(){
     const glloader = new GLTFLoader();
 
-   glloader.load( 'models/rey/scene.gltf', function ( gltf ) {
-       gltf.scene.position.y = 1.5;
-       gltf.scene.position.x = 3;
-       gltf.scene.position.z = 21;
+    glloader.load( 'models/rey/scene.gltf', function ( gltf ) {
+        gltf.scene.position.y = 1.5;
+        gltf.scene.position.x = 3;
+        gltf.scene.position.z = 21;
 
-       // Establecer escala del rey
-       gltf.scene.scale.x = gltf.scene.scale.x*3
-       gltf.scene.scale.y = gltf.scene.scale.y*3
-       gltf.scene.scale.z = gltf.scene.scale.z*3
-       gltf.scene.name = 'rey';
-       const rey = gltf.scene;
+        // Establecer escala del rey
+        gltf.scene.scale.x = gltf.scene.scale.x*3
+        gltf.scene.scale.y = gltf.scene.scale.y*3
+        gltf.scene.scale.z = gltf.scene.scale.z*3
+        gltf.scene.name = 'rey';
+        const rey = gltf.scene;
        
-       // Agregar modelo y relacionar
-       boardObject.add( rey );
-       chessPieces.push(rey);
-       gltf.scene.traverse(ob=>{
+        // Agregar modelo y relacionar
+        boardObject.add( rey );
+        chessPieces.push(rey);
+        gltf.scene.traverse(ob=>{
         if(ob.isObject3D){
              ob.castShadow = true;
              ob.receiveShadow = false;
@@ -380,7 +415,7 @@ function loadPieces(){
         gltf.scene.position.x = 9;
         gltf.scene.position.z = 21;
         
-        //Establecemos escala del alfil
+        //Establecer escala del alfil
         gltf.scene.scale.x = gltf.scene.scale.x*3
         gltf.scene.scale.y = gltf.scene.scale.y*3
         gltf.scene.scale.z = gltf.scene.scale.z*3
@@ -686,10 +721,11 @@ function moveSelectedPiece(newPositionX, newPositionZ){
         }).
         start();
 }
+
 function setupGUI()
 {
     effectController = {
-		mensaje: 'Control iluminación',
+		mensaje: 'Proyecto Bloque #1',
         direccionalIntensity: 0.8,
         focalIntensity: 0.3,
         direccionalPosX: 5,
@@ -701,30 +737,33 @@ function setupGUI()
         direccionalShadow: true,
         focalShadow: true,
         enableDireccinalHelper: true,
-        enableFocalHelper: true
+        enableFocalHelper: true,
+        play: function(){video.play();},
+        pause: function(){video.pause();},
+        mute: true
     }
 
     // Creacion interfaz
 	const gui = new GUI();
 
-	// Construccion del menu
-	const hd = gui.addFolder("Controles de Luz Direccional");
+	// Construccion Menu de Control
+	const hd = gui.addFolder("Luz Direccional");
     hd.add(effectController, "direccionalIntensity", 0, 1, 0.1).name("Intensidad").onChange(v => {
         direccional.intensity = v;
     });
-    hd.add(effectController, "direccionalPosX", -5, 5, 0.5).name("Iluminación dese Eje X").onChange(v => {
+    hd.add(effectController, "direccionalPosX", -5, 5, 0.5).name("Iluminación desde Eje X      ").onChange(v => {
         direccional.position.x = v;
     });
-    hd.add(effectController, "direccionalPosY", 0, 10, 0.5).name("Iluminación dese Eje Y").onChange(v => {
+    hd.add(effectController, "direccionalPosY", 0, 10, 0.5).name("Iluminación desde Eje Y      ").onChange(v => {
         direccional.position.y = v;
     });
-    hd.add(effectController, "direccionalPosZ", -5, 5, 0.5).name("Iluminación dese Eje Z").onChange(v => {
+    hd.add(effectController, "direccionalPosZ", -5, 5, 0.5).name("Iluminación desde Eje Z      ").onChange(v => {
         direccional.position.z = v;
     });
-    hd.add(effectController, "direccionalShadow").name("Colocar Sombras   ").onChange(v => {
+    hd.add(effectController, "direccionalShadow").name("Desactivar Sombras   ").onChange(v => {
         direccional.castShadow = v;
     });
-    hd.add(effectController, "enableDireccinalHelper").name("Activar Guías   ").onChange(v => {
+    hd.add(effectController, "enableDireccinalHelper").name("Desactivar Guías   ").onChange(v => {
         if(v){
             scene.add(direccionalHelper);
         }
@@ -733,23 +772,23 @@ function setupGUI()
         }
     })
 
-    const hf =  gui.addFolder("Controles de Luz Focal");
+    const hf =  gui.addFolder("Luz Focal");
     hf.add(effectController, "focalIntensity", 0, 1, 0.1).name("Intensidad").onChange(v => {
         focal.intensity = v;
     });
-    hf.add(effectController, "focalPosX", -5, 5, 0.5).name("Iluminación dese Eje X").onChange(v => {
+    hf.add(effectController, "focalPosX", -5, 5, 0.5).name("Iluminación desde Eje X      ").onChange(v => {
         focal.position.x = v;
     });
-    hf.add(effectController, "focalPosY", 0, 10, 0.5).name("Iluminación dese Eje Y").onChange(v => {
+    hf.add(effectController, "focalPosY", 0, 10, 0.5).name("Iluminación desde Eje Y      ").onChange(v => {
         focal.position.y = v;
     });
-    hf.add(effectController, "focalPosZ", -5, 5, 0.5).name("Iluminación dese Eje Z").onChange(v => {
+    hf.add(effectController, "focalPosZ", -5, 5, 0.5).name("Iluminación desde Eje Z      ").onChange(v => {
         focal.position.z = v;
     });
-    hf.add(effectController, "focalShadow").name("Colocar Sombras   ").onChange(v => {
+    hf.add(effectController, "focalShadow").name("Desactivar Sombras   ").onChange(v => {
         focal.castShadow = v;
     });
-    hf.add(effectController, "enableFocalHelper").name("Activar Guías   ").onChange(v => {
+    hf.add(effectController, "enableFocalHelper").name("Desctivar Guías   ").onChange(v => {
         if(v){
             scene.add(focalHelper);
         }
@@ -757,6 +796,12 @@ function setupGUI()
             scene.remove(focalHelper);
         }
     })
+
+    const hv = gui.addFolder("Controles de Video")
+    hv.add(effectController,"play");
+    hv.add(effectController,"pause");
+    hv.add(effectController,"mute").onChange(v=>{video.muted = v});
+
 }
 
 function updateAspectRatio()
