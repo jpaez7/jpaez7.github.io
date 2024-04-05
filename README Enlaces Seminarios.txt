@@ -17,6 +17,8 @@
 
 *** Proyecto Final: https://jpaez7.github.io/PF_AGM_Ajedrez.html
 
+*** Proyecto Final (Nueva Versión): https://jpaez7.github.io/PF_AGM_AjedrezNV.html
+
 Atentamente,
 
 José Páez
